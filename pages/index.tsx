@@ -1,5 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
+import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,13 +12,45 @@ const Home = () => {
   const [showCharacters, setShowCharacters] = useState(true)
   const [episodePage, setEpisodePage] = useState(1)
   const [characterPage, setCharacterPage] = useState(1)
+  const [favoritesList, setFavoritesList] = useState<String[]>([])
+  if(typeof window !== 'undefined'){
+    var getArray = JSON.parse(localStorage.getItem('favorites') || '0')
 
+  }
 
-
+  useEffect(()=>{
+    if (getArray !== 0){
+      setFavoritesList([...getArray])
+    }
+  },[])
   const {data: characterData, error: characterError, loading: characterLoading} =useCharactersQuery({variables: {page: characterPage as number}});
   const {data: episodeData, error:episodeError, loading:episodeLoading} =useEpisodesQuery({variables: {page: episodePage as number}});
 
 
+  const addFav = ( charID:string) => {
+    let arr: any[] = favoritesList;
+    let addArray: boolean = true;
+    arr.map((item: any, key: number) => {
+      if (item == charID) {
+        arr.splice(key, 1);
+        addArray = false;
+      }
+    })
+    if(addArray){
+      arr.push(charID);
+
+    }
+    setFavoritesList([...arr] as never[]);
+    localStorage.setItem("favorites", JSON.stringify(favoritesList));
+
+    var storage = localStorage.getItem("favItem" + (charID ) || '0')
+    if(storage == null){
+      localStorage.setItem(('favItem' + (charID)), JSON.stringify(favoritesList));
+    }
+    else{
+      localStorage.removeItem('favItem' + (charID));
+    }
+  }
   // if(characterLoading) {
   //   return(
   //     <div>
@@ -107,9 +140,13 @@ const Home = () => {
               </Link>
             
               <div className="flex flex-col p-5 ">
+              <div className="flex justify-between">
+
               <Link href={`characters/${character?.id}`}>
                 <p className="text-xl font-semibold hover:cursor-pointer">{character?.name}</p>
                 </Link>
+                {favoritesList.includes(character?.id as string ) ?  <IoIosHeart className="hover:cursor-pointer" onClick={() => addFav(character?.id as string)}  style={{color:'red'}}></IoIosHeart>:  <IoIosHeartEmpty className="hover:cursor-pointer" onClick={() => addFav(character?.id as string)} style={{color:'red'}}></IoIosHeartEmpty> }
+                </div>
                 <p>{character?.species}</p>
                 <p>{character?.gender}</p>
                 <p>{character?.location?.name}</p>
