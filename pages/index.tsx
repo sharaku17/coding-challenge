@@ -78,8 +78,8 @@ const Home = () => {
         </div>
 
        
-        <div className="grid grid-cols-3 gap-12">
-          {showCharacters  && characterData &&  <div className="flex justify-between w-full col-span-3 px-4 ">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
+          {showCharacters  && characterData &&  <div className="flex justify-between w-full px-4 md:col-span-3 ">
         <button className="disabled:text-gray-400" type="button" disabled={characterPage === 1} onClick={()=> setCharacterPage(characterPage-1)}>
             Prev Page
           </button>
@@ -94,7 +94,7 @@ const Home = () => {
             return (
               <>
              
-            <div key={character?.id} className="flex flex-col max-w-sm bg-white border border-gray-200 rounded-lg shadow-md ">
+            <div key={character?.id} className="flex flex-col max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-md ">
               <Link href={`characters/${character?.id}`}>
               <div className="w-full hover:cursor-pointer">
               <Image

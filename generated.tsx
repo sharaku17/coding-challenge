@@ -228,7 +228,7 @@ export type GetEpisodesQueryVariables = Exact<{
 }>;
 
 
-export type GetEpisodesQuery = { __typename?: 'Query', episode?: { __typename?: 'Episode', id?: string | null, name?: string | null, air_date?: string | null, episode?: string | null, created?: string | null, characters: Array<{ __typename?: 'Character', id?: string | null, name?: string | null } | null> } | null };
+export type GetEpisodesQuery = { __typename?: 'Query', episode?: { __typename?: 'Episode', id?: string | null, name?: string | null, air_date?: string | null, episode?: string | null, created?: string | null, characters: Array<{ __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null } | null> } | null };
 
 
 export const CharactersDocument = gql`
@@ -402,6 +402,7 @@ export const GetEpisodesDocument = gql`
     characters {
       id
       name
+      image
     }
     created
   }

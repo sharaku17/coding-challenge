@@ -7,6 +7,7 @@ query getEpisodes($episodeID: ID!) {
     characters {
       id
       name
+      image
     }
     created
   }
