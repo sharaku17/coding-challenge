@@ -22,6 +22,7 @@ const Home = ({ favList, id }: FavList) => {
   const [episodePage, setEpisodePage] = useState(1);
   const [characterPage, setCharacterPage] = useState(1);
   const [favoritesList, setFavoritesList] = useState<String[]>([]);
+
   const { favoriteList, setFavList, tableID, setTableID } = useContext(
     FavListContext
   ) as favListContextType;
