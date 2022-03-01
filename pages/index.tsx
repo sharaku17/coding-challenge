@@ -97,7 +97,7 @@ const Home = ({ favList, id }: FavList) => {
 
             <a
               href="./api/auth/login"
-              className="px-6 py-3 text-white bg-blue-500 rounded "
+              className="px-6 py-3 text-white bg-blue-500 rounded hover:bg-blue-600 "
             >
               {" "}
               Login
@@ -124,10 +124,13 @@ const Home = ({ favList, id }: FavList) => {
             <h1 className="mx-auto text-5xl font-bold text-center ">
               Rick and Morty App
             </h1>
-
+            <img
+              src={user.picture as string}
+              className="w-12 h-12 mr-4 rounded-full"
+            ></img>
             <a
               href="./api/auth/logout"
-              className="px-6 py-3 text-white bg-blue-500 rounded "
+              className="px-6 py-3 text-white bg-blue-500 rounded hover:bg-blue-600 "
             >
               {" "}
               Logout
@@ -173,7 +176,7 @@ const Home = ({ favList, id }: FavList) => {
         </div>
 
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-          {showCharacters && characterData && (
+          {showCharacters && (
             <div className="flex justify-between w-full px-4 md:col-span-3 ">
               <button
                 className="disabled:text-gray-400"
@@ -246,8 +249,7 @@ const Home = ({ favList, id }: FavList) => {
                 </>
               );
             })}
-
-          {!showCharacters && episodeData && (
+          {!showCharacters && (
             <>
               <div className="flex justify-between w-full col-span-3 px-4 ">
                 <button
@@ -260,12 +262,16 @@ const Home = ({ favList, id }: FavList) => {
                 <span>{`current page: ${episodePage}`} </span>
                 <button
                   className="disabled:text-gray-400"
-                  disabled={episodePage === episodeData.episodes?.info?.pages}
+                  disabled={episodePage === episodeData?.episodes?.info?.pages}
                   onClick={() => setEpisodePage(episodePage + 1)}
                 >
                   Next Page
                 </button>
               </div>
+            </>
+          )}
+          {!showCharacters && episodeData && (
+            <>
               <div className="col-span-3">
                 <EpisodeList
                   episodes={episodeData?.episodes?.results as Episode[]}
