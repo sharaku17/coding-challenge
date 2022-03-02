@@ -107,21 +107,17 @@ const Home = ({ favList, id }: FavList) => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <div className="h-64 max-w-5xl mx-auto">
-          <div className="flex justify-between w-full p-12">
-            <h1 className="mx-auto text-5xl font-bold text-center ">
-              Rick and Morty App
-            </h1>
-
+          <div className="flex justify-end mb-12">
             <a
               href="./api/auth/login"
-              className="px-6 py-3 text-white bg-blue-500 rounded hover:bg-blue-600 "
+              className="px-6 py-3 my-5 text-white bg-blue-500 rounded hover:bg-blue-600 "
             >
               {" "}
               Login
             </a>
             <button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className="ml-5"
+              className="mx-5"
             >
               {theme === "light" ? (
                 <BsFillMoonStarsFill
@@ -132,6 +128,9 @@ const Home = ({ favList, id }: FavList) => {
               )}
             </button>
           </div>
+          <h1 className="mx-auto text-5xl font-bold text-center ">
+            Rick and Morty App
+          </h1>
           <div className="flex items-center justify-center h-full text-3xl text-center ">
             <span> Please Login to see Character and Episode Data...</span>
           </div>
@@ -158,18 +157,18 @@ const Home = ({ favList, id }: FavList) => {
             <div className="flex justify-end mb-12">
               <img
                 src={user.picture as string}
-                className="w-12 h-12 mr-4 rounded-full"
+                className="w-12 h-12 my-5 mr-4 rounded-full"
               ></img>
               <a
                 href="./api/auth/logout"
-                className="px-6 py-3 text-white bg-blue-500 rounded hover:bg-blue-600 "
+                className="px-6 py-3 my-5 text-white bg-blue-500 rounded hover:bg-blue-600 "
               >
                 {" "}
                 Logout
               </a>
               <button
                 onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-                className="ml-5"
+                className="mx-5"
               >
                 {theme === "light" ? (
                   <BsFillMoonStarsFill
