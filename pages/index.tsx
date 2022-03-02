@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Episode, useCharactersQuery, useEpisodesQuery } from "../generated";
 import EpisodeList from "../components/EpisodeList";
-import { FavoriteHeart } from "../components/favoriteHeart";
+import FavoriteHeart from "../components/favoriteHeart";
 import { table } from "./api/utils/Airtable";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getSession } from "@auth0/nextjs-auth0";
