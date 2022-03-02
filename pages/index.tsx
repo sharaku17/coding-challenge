@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Episode, useCharactersQuery, useEpisodesQuery } from "../generated";
 import EpisodeList from "../components/EpisodeList";
-import FavoriteHeart from "../components/favoriteHeart";
+import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import { table } from "./api/utils/Airtable";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getSession } from "@auth0/nextjs-auth0";
@@ -283,11 +283,19 @@ const Home = ({ favList, id }: FavList) => {
                             {character?.name}
                           </p>
                         </Link>
-                        <FavoriteHeart
-                          favoriteList={favoriteList}
-                          character={character}
-                          addFav={addFav}
-                        ></FavoriteHeart>
+                        {favoriteList.includes(character?.id as string) ? (
+                          <IoIosHeart
+                            className="hover:cursor-pointer"
+                            onClick={() => addFav(character?.id as string)}
+                            style={{ color: "red" }}
+                          ></IoIosHeart>
+                        ) : (
+                          <IoIosHeartEmpty
+                            className="hover:cursor-pointer"
+                            onClick={() => addFav(character?.id as string)}
+                            style={{ color: "red" }}
+                          ></IoIosHeartEmpty>
+                        )}
                       </div>
                       <p>{character?.species}</p>
                       <p>{character?.gender}</p>
