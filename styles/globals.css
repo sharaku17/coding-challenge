@@ -5,7 +5,7 @@
 html,
 body {
   /* Hide scrollbar for IE, Edge and Firefox */
-
+  @apply dark:bg-gray-800 dark:text-white;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   padding: 0;

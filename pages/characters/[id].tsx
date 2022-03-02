@@ -11,6 +11,7 @@ import EpisodeList from "../../components/EpisodeList";
 import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
 import { table } from "../api/utils/Airtable";
+import { motion } from "framer-motion";
 
 type FavList = {
   favList: string;
@@ -39,7 +40,12 @@ const CharacterPage = ({ favList, ID }: FavList) => {
     <div className="grid max-w-5xl grid-cols-1 px-5 py-24 mx-auto md:grid-cols-2 ">
       <div className="col-span-1 mb-24 text-left">
         <ul>
-          <li className="m-6">
+          <motion.li
+            initial={{ translateX: "-100px", opacity: 0 }}
+            animate={{ translateX: "0px", opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="m-6"
+          >
             <div className="secondary-t">
               <div className="flex flex-col w-full ">
                 <Link href="/">
@@ -64,8 +70,13 @@ const CharacterPage = ({ favList, ID }: FavList) => {
                 </div>
               </div>
             </div>
-          </li>
-          <li className="m-6 mt-12">
+          </motion.li>
+          <motion.li
+            initial={{ translateX: "-100px", opacity: 0 }}
+            animate={{ translateX: "0px", opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="m-6 mt-12"
+          >
             <div>
               <span className="font-normal text-gray-400 uppercase spacing-wide">
                 Gender
@@ -76,8 +87,13 @@ const CharacterPage = ({ favList, ID }: FavList) => {
                 </ul>
               </div>
             </div>
-          </li>
-          <li className="m-6 mt-12">
+          </motion.li>
+          <motion.li
+            initial={{ translateX: "-100px", opacity: 0 }}
+            animate={{ translateX: "0px", opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="m-6 mt-12"
+          >
             <div>
               <span className="font-normal text-gray-400 uppercase spacing-wide">
                 Origin
@@ -86,9 +102,14 @@ const CharacterPage = ({ favList, ID }: FavList) => {
                 {data?.character?.origin?.name}
               </div>
             </div>
-          </li>
+          </motion.li>
 
-          <li className="m-6 mt-12">
+          <motion.li
+            initial={{ translateX: "-100px", opacity: 0 }}
+            animate={{ translateX: "0px", opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="m-6 mt-12"
+          >
             <div>
               <span className="font-normal text-gray-400 uppercase spacing-wide">
                 location
@@ -97,8 +118,13 @@ const CharacterPage = ({ favList, ID }: FavList) => {
                 {data?.character?.location?.name}
               </div>
             </div>
-          </li>
-          <li className="m-6 mt-12">
+          </motion.li>
+          <motion.li
+            initial={{ translateX: "-100px", opacity: 0 }}
+            animate={{ translateX: "0px", opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
+            className="m-6 mt-12"
+          >
             <div>
               <span className="font-normal text-gray-400 uppercase spacing-wide">
                 status
@@ -107,10 +133,15 @@ const CharacterPage = ({ favList, ID }: FavList) => {
                 {data?.character?.status}
               </div>
             </div>
-          </li>
+          </motion.li>
         </ul>
       </div>
-      <div className="flex flex-col items-center justify-center h-full mb-12 md:mb-0">
+      <motion.div
+        initial={{ translateY: "100px", opacity: 0 }}
+        animate={{ translateY: "0px", opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="flex flex-col items-center justify-center h-full mb-12 md:mb-0"
+      >
         <Image
           className="object-cover object-center mx-auto border border-gray-200 shadow-lg rounded-3xl"
           width="400"
@@ -125,13 +156,18 @@ const CharacterPage = ({ favList, ID }: FavList) => {
             style={{ color: "red" }}
           ></IoIosHeartEmpty>
         )}
-      </div>
+      </motion.div>
 
-      <div className="col-span-1 md:col-span-2">
+      <motion.div
+        initial={{ translateY: "100px", opacity: 0 }}
+        animate={{ translateY: "0px", opacity: 1 }}
+        transition={{ duration: 0.8, delay: 1.1 }}
+        className="col-span-1 md:col-span-2"
+      >
         <EpisodeList
           episodes={data?.character?.episode as Episode[]}
         ></EpisodeList>
-      </div>
+      </motion.div>
     </div>
   );
 };

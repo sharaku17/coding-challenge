@@ -1,16 +1,23 @@
+// Load Imports
+
 import type { GetServerSideProps } from "next";
 import { useEffect, useState, useContext } from "react";
-import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
+import { BsFillSunFill, BsFillMoonStarsFill } from "react-icons/bs";
+import { motion } from "framer-motion";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { Episode, useCharactersQuery, useEpisodesQuery } from "../generated";
 import EpisodeList from "../components/EpisodeList";
+import { FavoriteHeart } from "../components/favoriteHeart";
 import { table } from "./api/utils/Airtable";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getSession } from "@auth0/nextjs-auth0";
 import { FavListContext } from "../context/FavListContext";
 import { favListContextType } from "../context/FavListContext";
+import { useTheme } from "next-themes";
+
+// Type Definitions
 
 type FavList = {
   favList: string;
@@ -18,11 +25,14 @@ type FavList = {
 };
 
 const Home = ({ favList, id }: FavList) => {
+  // Define States
   const [showCharacters, setShowCharacters] = useState(true);
   const [episodePage, setEpisodePage] = useState(1);
   const [characterPage, setCharacterPage] = useState(1);
   const [favoritesList, setFavoritesList] = useState<String[]>([]);
 
+  // Use Hooks
+  const { theme, setTheme } = useTheme();
   const { favoriteList, setFavList, tableID, setTableID } = useContext(
     FavListContext
   ) as favListContextType;
@@ -34,6 +44,7 @@ const Home = ({ favList, id }: FavList) => {
     setTableID(id);
   }, []);
 
+  // Fetch Character and Episode Data by using Apollo Hooks
   const {
     data: characterData,
     error: characterError,
@@ -45,6 +56,7 @@ const Home = ({ favList, id }: FavList) => {
     loading: episodeLoading,
   } = useEpisodesQuery({ variables: { page: episodePage as number } });
 
+  // Functions to update Favorite List and also update Database
   const updateFavList = async (updatedFavList: string[]) => {
     try {
       const res = await fetch("/api/addFav", {
@@ -75,9 +87,13 @@ const Home = ({ favList, id }: FavList) => {
     updateFavList(arr);
   };
 
+  // Check if Character Data is loaded or an error occured
+
   if (characterError) {
     return <div>{characterError.message}</div>;
   }
+
+  // Check if User is logged in, if not, tell him to login
 
   if (!user) {
     return (
@@ -90,7 +106,7 @@ const Home = ({ favList, id }: FavList) => {
           />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="max-w-5xl mx-auto">
+        <div className="h-64 max-w-5xl mx-auto">
           <div className="flex justify-between w-full p-12">
             <h1 className="mx-auto text-5xl font-bold text-center ">
               Rick and Morty App
@@ -103,11 +119,28 @@ const Home = ({ favList, id }: FavList) => {
               {" "}
               Login
             </a>
+            <button
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              className="ml-5"
+            >
+              {theme === "light" ? (
+                <BsFillMoonStarsFill
+                  style={{ color: "black" }}
+                ></BsFillMoonStarsFill>
+              ) : (
+                <BsFillSunFill style={{ color: "white" }}></BsFillSunFill>
+              )}
+            </button>
+          </div>
+          <div className="flex items-center justify-center h-full text-3xl text-center ">
+            <span> Please Login to see Character and Episode Data...</span>
           </div>
         </div>
       </div>
     );
   }
+
+  // Display Page when user is logged in
 
   return (
     <div>
@@ -121,23 +154,36 @@ const Home = ({ favList, id }: FavList) => {
       </Head>
       <div className="max-w-5xl mx-auto">
         <div className="w-full p-12 ">
-          <div className="flex justify-between">
-            <h1 className="mx-auto text-5xl font-bold text-center ">
-              Rick and Morty App
-            </h1>
-            <img
-              src={user.picture as string}
-              className="w-12 h-12 mr-4 rounded-full"
-            ></img>
-            <a
-              href="./api/auth/logout"
-              className="px-6 py-3 text-white bg-blue-500 rounded hover:bg-blue-600 "
-            >
-              {" "}
-              Logout
-            </a>
+          <div className="">
+            <div className="flex justify-end mb-12">
+              <img
+                src={user.picture as string}
+                className="w-12 h-12 mr-4 rounded-full"
+              ></img>
+              <a
+                href="./api/auth/logout"
+                className="px-6 py-3 text-white bg-blue-500 rounded hover:bg-blue-600 "
+              >
+                {" "}
+                Logout
+              </a>
+              <button
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                className="ml-5"
+              >
+                {theme === "light" ? (
+                  <BsFillMoonStarsFill
+                    style={{ color: "black" }}
+                  ></BsFillMoonStarsFill>
+                ) : (
+                  <BsFillSunFill style={{ color: "white" }}></BsFillSunFill>
+                )}
+              </button>
+            </div>
           </div>
-
+          <h1 className="mx-auto text-5xl font-bold text-center ">
+            Rick and Morty App
+          </h1>
           <div className="mt-10 mb-4 border-b border-gray-200">
             <ul className="flex flex-wrap justify-center -mb-px ">
               <li className="mr-2">
@@ -145,11 +191,11 @@ const Home = ({ favList, id }: FavList) => {
                   onClick={() => setShowCharacters(true)}
                   className={`inline-block px-4 py-4 text-sm font-medium text-center ${
                     showCharacters
-                      ? "text-indigo-600"
-                      : "text-gray-500 hover:text-gray-600"
+                      ? "text-indigo-600 dark:text-indigo-300"
+                      : "text-gray-500 dark:text-white hover:text-gray-600"
                   }  border-b-2 border-transparent rounded-t-lg  ${
                     showCharacters
-                      ? "border-indigo-600"
+                      ? "border-indigo-600 dark:border-indigo-500"
                       : " hover:border-gray-300"
                   }`}
                 >
@@ -161,11 +207,11 @@ const Home = ({ favList, id }: FavList) => {
                   onClick={() => setShowCharacters(false)}
                   className={`inline-block px-4 py-4 text-sm font-medium text-center ${
                     !showCharacters
-                      ? "text-indigo-600"
-                      : "text-gray-500 hover:text-gray-600"
+                      ? "text-indigo-600 dark:text-indigo-300"
+                      : "text-gray-500 dark:text-white hover:text-gray-600"
                   }  border-b-2 border-transparent rounded-t-lg  ${
                     !showCharacters
-                      ? "border-indigo-600"
+                      ? "border-indigo-600 dark:border-indigo-500"
                       : " hover:border-gray-300"
                   }`}
                 >
@@ -202,12 +248,21 @@ const Home = ({ favList, id }: FavList) => {
           )}
           {showCharacters &&
             characterData &&
-            characterData?.characters?.results?.map((character) => {
+            characterData?.characters?.results?.map((character, i) => {
               return (
-                <>
-                  <div
-                    key={character?.id}
-                    className="flex flex-col max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-md "
+                <div key={character?.id}>
+                  <motion.div
+                    initial={{ opacity: 0, translateX: -40 }}
+                    animate={{
+                      opacity: 1,
+                      translateX: 0,
+                      transition: {
+                        duration: 0.4,
+                        delay: i * 0.1,
+                      },
+                    }}
+                    whileHover={{ scale: 0.9, transition: { delay: 0 } }}
+                    className="flex flex-col max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-md dark:border-gray-800 dark:bg-gray-700 "
                   >
                     <Link href={`characters/${character?.id}`}>
                       <div className="w-full hover:cursor-pointer">
@@ -228,26 +283,18 @@ const Home = ({ favList, id }: FavList) => {
                             {character?.name}
                           </p>
                         </Link>
-                        {favoriteList.includes(character?.id as string) ? (
-                          <IoIosHeart
-                            className="hover:cursor-pointer"
-                            onClick={() => addFav(character?.id as string)}
-                            style={{ color: "red" }}
-                          ></IoIosHeart>
-                        ) : (
-                          <IoIosHeartEmpty
-                            className="hover:cursor-pointer"
-                            onClick={() => addFav(character?.id as string)}
-                            style={{ color: "red" }}
-                          ></IoIosHeartEmpty>
-                        )}
+                        <FavoriteHeart
+                          favoriteList={favoriteList}
+                          character={character}
+                          addFav={addFav}
+                        ></FavoriteHeart>
                       </div>
                       <p>{character?.species}</p>
                       <p>{character?.gender}</p>
                       <p>{character?.location?.name}</p>
                     </div>
-                  </div>
-                </>
+                  </motion.div>
+                </div>
               );
             })}
           {!showCharacters && (
@@ -272,13 +319,16 @@ const Home = ({ favList, id }: FavList) => {
             </>
           )}
           {!showCharacters && episodeData && (
-            <>
-              <div className="col-span-3">
-                <EpisodeList
-                  episodes={episodeData?.episodes?.results as Episode[]}
-                ></EpisodeList>
-              </div>
-            </>
+            <motion.div
+              initial={{ translateY: "100px", opacity: 0 }}
+              animate={{ translateY: "0px", opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="col-span-3"
+            >
+              <EpisodeList
+                episodes={episodeData?.episodes?.results as Episode[]}
+              ></EpisodeList>
+            </motion.div>
           )}
         </div>
       </div>
