@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Episode, useCharactersQuery, useEpisodesQuery } from "../generated";
 import EpisodeList from "../components/EpisodeList";
+
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import { table } from "./api/utils/Airtable";
 import { useUser } from "@auth0/nextjs-auth0";
@@ -16,6 +17,9 @@ import { getSession } from "@auth0/nextjs-auth0";
 import { FavListContext } from "../context/FavListContext";
 import { favListContextType } from "../context/FavListContext";
 import { useTheme } from "next-themes";
+import LoginPage from "../components/LoginPage";
+import Pagination from "../components/Pagination";
+import CharacterCard from "../components/characterCard";
 
 // Type Definitions
 
@@ -106,35 +110,7 @@ const Home = ({ favList, id }: FavList) => {
           />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="h-64 max-w-5xl mx-auto">
-          <div className="flex justify-end mb-12">
-            <a
-              href="./api/auth/login"
-              className="px-6 py-3 my-5 text-white bg-blue-500 rounded hover:bg-blue-600 "
-            >
-              {" "}
-              Login
-            </a>
-            <button
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className="mx-5"
-            >
-              {theme === "light" ? (
-                <BsFillMoonStarsFill
-                  style={{ color: "black" }}
-                ></BsFillMoonStarsFill>
-              ) : (
-                <BsFillSunFill style={{ color: "white" }}></BsFillSunFill>
-              )}
-            </button>
-          </div>
-          <h1 className="mx-auto text-5xl font-bold text-center ">
-            Rick and Morty App
-          </h1>
-          <div className="flex items-center justify-center h-full text-3xl text-center ">
-            <span> Please Login to see Character and Episode Data...</span>
-          </div>
-        </div>
+        <LoginPage></LoginPage>
       </div>
     );
   }
@@ -223,112 +199,25 @@ const Home = ({ favList, id }: FavList) => {
 
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
           {showCharacters && (
-            <div className="flex justify-between w-full px-4 md:col-span-3 ">
-              <button
-                className="disabled:text-gray-400"
-                type="button"
-                disabled={characterPage === 1}
-                onClick={() => setCharacterPage(characterPage - 1)}
-              >
-                Prev Page
-              </button>
-              <span>{`current page: ${characterPage}`} </span>
-              <button
-                className="disabled:text-gray-400"
-                type="button"
-                disabled={
-                  characterPage === characterData?.characters?.info?.pages
-                }
-                onClick={() => setCharacterPage(characterPage + 1)}
-              >
-                Next Page
-              </button>
-            </div>
+            <Pagination
+              characterData={characterData}
+              characterPage={characterPage}
+              setCharacterPage={setCharacterPage}
+            ></Pagination>
           )}
-          {showCharacters &&
-            characterData &&
-            characterData?.characters?.results?.map((character, i) => {
-              return (
-                <div key={character?.id}>
-                  <motion.div
-                    initial={{ opacity: 0, translateX: -40 }}
-                    animate={{
-                      opacity: 1,
-                      translateX: 0,
-                      transition: {
-                        duration: 0.4,
-                        delay: i * 0.1,
-                      },
-                    }}
-                    whileHover={{ scale: 0.9, transition: { delay: 0 } }}
-                    className="flex flex-col max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-md dark:border-gray-800 dark:bg-gray-700 "
-                  >
-                    <Link href={`characters/${character?.id}`}>
-                      <div className="w-full hover:cursor-pointer">
-                        <Image
-                          src={character?.image as string}
-                          alt={character?.name as string}
-                          width="310"
-                          height="300"
-                          className="w-full rounded-t-lg"
-                        />
-                      </div>
-                    </Link>
-
-                    <div className="flex flex-col p-5 ">
-                      <div className="flex justify-between">
-                        <Link href={`characters/${character?.id}`}>
-                          <p className="text-xl font-semibold hover:cursor-pointer">
-                            {character?.name}
-                          </p>
-                        </Link>
-                        <motion.div
-                          whileHover={{ scale: 1.2 }}
-                          whileTap={{ scale: 0.8 }}
-                        >
-                          {favoriteList.includes(character?.id as string) ? (
-                            <IoIosHeart
-                              className="hover:cursor-pointer"
-                              onClick={() => addFav(character?.id as string)}
-                              style={{ color: "red" }}
-                            ></IoIosHeart>
-                          ) : (
-                            <IoIosHeartEmpty
-                              className="hover:cursor-pointer"
-                              onClick={() => addFav(character?.id as string)}
-                              style={{ color: "red" }}
-                            ></IoIosHeartEmpty>
-                          )}
-                        </motion.div>
-                      </div>
-                      <p>{character?.species}</p>
-                      <p>{character?.gender}</p>
-                      <p>{character?.location?.name}</p>
-                    </div>
-                  </motion.div>
-                </div>
-              );
-            })}
+          {showCharacters && characterData && (
+            <CharacterCard
+              characterData={characterData}
+              favoriteList={favoriteList}
+              addFav={addFav}
+            ></CharacterCard>
+          )}
           {!showCharacters && (
-            <>
-              <div className="flex justify-between w-full col-span-3 px-4 ">
-                <button
-                  className="disabled:text-gray-400"
-                  disabled={episodePage === 1}
-                  onClick={() => setEpisodePage(episodePage - 1)}
-                >
-                  Prev Page
-                </button>
-                <span>{`current page: ${episodePage}`} </span>
-                <button
-                  className="disabled:text-gray-400"
-                  disabled={episodePage === episodeData?.episodes?.info?.pages}
-                  onClick={() => setEpisodePage(episodePage + 1)}
-                >
-                  Next Page
-                </button>
-              </div>
-            </>
+            <Pagination
+              characterData={episodeData}
+              characterPage={episodePage}
+              setCharacterPage={setEpisodePage}
+            ></Pagination>
           )}
           {!showCharacters && episodeData && (
             <motion.div
