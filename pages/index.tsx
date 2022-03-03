@@ -5,12 +5,8 @@ import { useEffect, useState, useContext } from "react";
 import { BsFillSunFill, BsFillMoonStarsFill } from "react-icons/bs";
 import { motion } from "framer-motion";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import { Episode, useCharactersQuery, useEpisodesQuery } from "../generated";
 import EpisodeList from "../components/EpisodeList";
-
-import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import { table } from "./api/utils/Airtable";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getSession } from "@auth0/nextjs-auth0";
@@ -19,7 +15,7 @@ import { favListContextType } from "../context/FavListContext";
 import { useTheme } from "next-themes";
 import LoginPage from "../components/LoginPage";
 import Pagination from "../components/Pagination";
-import CharacterCard from "../components/characterCard";
+import CharacterCard from "../components/CharacterCard";
 
 // Type Definitions
 
