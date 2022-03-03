@@ -7,10 +7,8 @@ export default withApiAuthRequired(async function handler(
   res: NextApiResponse<any>
 ) {
   const session = getSession(req, res);
-  console.log(session);
   const { favList } = req.body;
   const { id } = req.body;
-  console.log(favList, id);
   try {
     const updatedRecords = await table.update([
       {

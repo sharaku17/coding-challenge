@@ -182,7 +182,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       .firstPage();
 
     if (!res[0]) {
-      console.log("its in");
       try {
         const createdRecords = await table.create([
           {
@@ -194,7 +193,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         ]);
 
         const id = createdRecords[0].id;
-        console.log(id);
         return {
           props: {
             favList: "",

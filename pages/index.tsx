@@ -234,6 +234,8 @@ const Home = ({ favList, id }: FavList) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Fetching and creating DB entry for favorite characters
+
   const session = getSession(context.req, context.res);
   if (session) {
     const res = await table
@@ -243,7 +245,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       .firstPage();
 
     if (!res[0]) {
-      console.log("its in");
       try {
         const createdRecords = await table.create([
           {
@@ -255,7 +256,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         ]);
 
         const id = createdRecords[0].id;
-        console.log(id);
         return {
           props: {
             favList: "",
