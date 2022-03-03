@@ -282,19 +282,24 @@ const Home = ({ favList, id }: FavList) => {
                             {character?.name}
                           </p>
                         </Link>
-                        {favoriteList.includes(character?.id as string) ? (
-                          <IoIosHeart
-                            className="hover:cursor-pointer"
-                            onClick={() => addFav(character?.id as string)}
-                            style={{ color: "red" }}
-                          ></IoIosHeart>
-                        ) : (
-                          <IoIosHeartEmpty
-                            className="hover:cursor-pointer"
-                            onClick={() => addFav(character?.id as string)}
-                            style={{ color: "red" }}
-                          ></IoIosHeartEmpty>
-                        )}
+                        <motion.div
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.8 }}
+                        >
+                          {favoriteList.includes(character?.id as string) ? (
+                            <IoIosHeart
+                              className="hover:cursor-pointer"
+                              onClick={() => addFav(character?.id as string)}
+                              style={{ color: "red" }}
+                            ></IoIosHeart>
+                          ) : (
+                            <IoIosHeartEmpty
+                              className="hover:cursor-pointer"
+                              onClick={() => addFav(character?.id as string)}
+                              style={{ color: "red" }}
+                            ></IoIosHeartEmpty>
+                          )}
+                        </motion.div>
                       </div>
                       <p>{character?.species}</p>
                       <p>{character?.gender}</p>
