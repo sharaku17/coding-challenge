@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Visit deployed Site
 
-You can visit this App on Vercel deployed under the following [Link]{https://coding-challenge-blush.vercel.app/} 
+You can visit this App on Vercel deployed under the following [Link](https://coding-challenge-blush.vercel.app/) 
 
 
 ## Getting Started
